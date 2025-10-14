@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicAI - Neural Discovery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Starfield background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Gradient mesh background */
+        .gradient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 157, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Frosted glass effect */
+        .glass {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Accent gradient */
+        .accent-gradient {
+            background: linear-gradient(135deg, #00ff9d 0%, #00e5ff 100%);
+        }
+
+        /* Glow effect */
+        .glow {
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .glow-hover:hover {
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.5);
+        }
+
+        /* Search container */
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #00ff9d, #00e5ff, #7877c6);
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .search-wrapper:focus-within::before {
+            opacity: 1;
+        }
+
+        /* Song card with border animation */
+        .song-card {
+            position: relative;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .song-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, #00ff9d, #00e5ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .song-card:hover::before {
+            opacity: 1;
+        }
+
+        .song-card:hover {
+            transform: translateY(-4px);
+            background: rgba(25, 25, 25, 0.9);
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00ff9d, #00e5ff, #7877c6);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Loading animation */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        .spinner-reverse {
+            animation: spin-reverse 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            to { transform: rotate(-360deg); }
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button hover effect */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Metrics badge */
+        .metric-badge {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 229, 255, 0.1));
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+
+        /* Subtle grid background */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    
+    <!-- Starfield -->
+    <div class="stars" id="starfield"></div>
+    
+    <!-- Gradient mesh -->
+    <div class="gradient-mesh"></div>
+
+    <!-- Main content -->
+    <div class="relative z-10 min-h-screen">
+        
+        <!-- Header -->
+        <header class="pt-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg accent-gradient flex items-center justify-center">
+                        <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-semibold">MusicAI</span>
+                </div>
+                <div class="glass rounded-full px-6 py-2 text-sm text-gray-400">
+                    Developed by Achintya Srivastawa
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero section -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Title and description -->
+            <div class="text-center mt-20 mb-16 fade-in">
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    Discover Music<br/>
+                    <span class="gradient-text">Powered by AI</span>
+                </h1>
+                <p class="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-8">
+                    Advanced NLP analyzes millions of tracks to find your perfect sound. 
+                    Enter any song and discover what comes next.
+                </p>
+                
+                <!-- Metrics -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <div class="metric-badge rounded-full px-5 py-2 text-sm">
+                        <span class="text-[#00ff9d]">10M+</span> Songs Analyzed
+                    </div>
+                    <div class="metric-badge rounded-full px-5 py-2 text-sm">
+                        <span class="text-[#00e5ff]">99.5%</span> Accuracy
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search form -->
+            <div class="max-w-3xl mx-auto mb-20">
+                <form id="songForm">
+                    <div class="search-wrapper rounded-2xl p-[2px]">
+                        <div class="glass rounded-2xl flex items-center overflow-hidden">
+                            <div class="pl-6 pr-4 text-gray-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="songInput" 
+                                placeholder="Enter song, artist, or genre..." 
+                                required 
+                                class="flex-1 bg-transparent py-5 px-2 text-white placeholder-gray-600 focus:outline-none text-lg"
+                                autocomplete="off"
+                            >
+                            <button 
+                                type="submit" 
+                                class="btn-primary accent-gradient text-black font-semibold py-5 px-8 m-1 rounded-xl hover:opacity-90 transition-opacity relative z-10"
+                            >
+                                Discover
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading state -->
+            <div id="loader" class="hidden text-center py-20">
+                <div class="relative w-16 h-16 mx-auto mb-6">
+                    <div class="absolute inset-0 rounded-full border-2 border-white/10"></div>
+                    <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-[#00ff9d] border-r-[#00e5ff] spinner"></div>
+                    <div class="absolute inset-2 rounded-full border-2 border-transparent border-t-[#00e5ff] border-r-[#00ff9d] spinner-reverse"></div>
+                </div>
+                <p class="text-gray-400 text-lg mb-2">Analyzing neural patterns</p>
+                <div class="flex justify-center space-x-1">
+                    <div class="w-2 h-2 rounded-full bg-[#00ff9d] animate-pulse"></div>
+                    <div class="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse" style="animation-delay: 0.2s;"></div>
+                    <div class="w-2 h-2 rounded-full bg-[#7877c6] animate-pulse" style="animation-delay: 0.4s;"></div>
+                </div>
+            </div>
+
+            <!-- Results section -->
+            <div id="resultsSection" class="hidden mb-20">
+                <div class="flex items-center justify-between mb-8 fade-in">
+                    <h2 class="text-3xl font-bold">Your Recommendations</h2>
+                    <div class="text-sm text-gray-500">Powered by content analysis</div>
+                </div>
+                <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Results will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Welcome state -->
+            <div id="welcomeState" class="max-w-4xl mx-auto mb-20 fade-in">
+                <div class="glass rounded-2xl p-12 text-center">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl accent-gradient flex items-center justify-center">
+                        <svg class="w-10 h-10 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Start Discovering</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Our AI analyzes song characteristics including singer, movie, mood/genre, and acoustic features 
+                        to recommend tracks that match your taste. Get started by entering a song above.
+                    </p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Create starfield
+        const starfield = document.getElementById('starfield');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starfield.appendChild(star);
+        }
+
+        // Form handling
+        const form = document.getElementById('songForm');
+        const resultsContainer = document.getElementById('results');
+        const resultsSection = document.getElementById('resultsSection');
+        const loader = document.getElementById('loader');
+        const welcomeState = document.getElementById('welcomeState');
+        const songInput = document.getElementById('songInput');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            welcomeState.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            resultsContainer.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            const input = songInput.value;
+
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `input=${encodeURIComponent(input)}`
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                
+                loader.classList.add('hidden');
+
+                if (data.error) {
+                    displayMessage(data.error);
+                } else if (data.recommendations && data.recommendations.length > 0) {
+                    displayRecommendations(data.recommendations);
+                } else {
+                    displayMessage("No recommendations found. Try a different search.");
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                loader.classList.add('hidden');
+                displayMessage('Connection error. Please try again.');
+            }
+        });
+
+        function displayRecommendations(recommendations) {
+            resultsSection.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+            
+            recommendations.forEach((song, index) => {
+                const card = document.createElement('div');
+                card.className = 'song-card rounded-xl p-6 fade-in cursor-pointer';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00ff9d] to-[#00e5ff] flex items-center justify-center text-black font-bold">
+                            ${index + 1}
+                        </div>
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <svg class="w-4 h-4 text-[#00ff9d]" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 leading-snug">${escapeHtml(song)}</h3>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <div class="w-1.5 h-1.5 rounded-full bg-[#00ff9d] mr-2"></div>
+                        Recommended
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+        
+        function displayMessage(message) {
+            resultsSection.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+            
+            const messageCard = document.createElement('div');
+            messageCard.className = 'col-span-full glass rounded-xl p-10 text-center fade-in';
+            messageCard.innerHTML = `
+                <div class="text-4xl mb-4">🔍</div>
+                <p class="text-gray-400 text-lg">${escapeHtml(message)}</p>
+            `;
+            resultsContainer.appendChild(messageCard);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+    </script>
+</body>
+</html>
