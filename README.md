@@ -40,6 +40,12 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
+## 🖼️ Project Preview
+
+<img width="1351" height="631" alt="image" src="https://github.com/user-attachments/assets/bd381daa-af29-4774-b2bb-17dccea66eae" />
+
+---
+
 ## 💻 Tech Stack
 
 | Component | Technology Used |
@@ -49,12 +55,6 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 | **Machine Learning / NLP** | TF-IDF, Cosine Similarity |
 | **Recommendation Logic** | Content-Based Filtering |
 | **Libraries Used** | pandas, scikit-learn |
-
----
-
-## 🖼️ Project Preview
-
-<img width="1351" height="631" alt="image" src="https://github.com/user-attachments/assets/bd381daa-af29-4774-b2bb-17dccea66eae" />
 
 ---
 
