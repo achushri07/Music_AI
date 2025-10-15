@@ -52,18 +52,18 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
+## 🖼️ Project Preview
+
+<img width="1351" height="631" alt="image" src="https://github.com/user-attachments/assets/bd381daa-af29-4774-b2bb-17dccea66eae" />
+
+---
+
 ## 🧩 Example Workflow
 
 1. User searches for: **“Shreya Ghoshal”**
 2. The app locates all songs related to the input using **TF-IDF Vectorization**.
 3. It computes **Cosine Similarity** scores between the input and every other track.
 4. Top similar songs (based on similarity scores) are displayed instantly on the webpage.
-
----
-
-## 🖼️ Project Preview
-
-<img width="1351" height="631" alt="image" src="https://github.com/user-attachments/assets/bd381daa-af29-4774-b2bb-17dccea66eae" />
 
 ---
 
