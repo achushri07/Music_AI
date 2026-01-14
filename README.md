@@ -7,6 +7,12 @@ Just enter any song, artist, or movie name — and let AI find the perfect track
 
 ---
 
+## Demo Video
+Do checkout the demo video of the application.
+https://github.com/achushri07/Music_AI/blob/main/MusicAI.mp4
+
+---
+
 ## 🌟 Overview
 
 **MusicAI** is powered by **Content-Based Filtering**, a powerful recommendation approach that compares the features of songs to find the most similar ones.  
