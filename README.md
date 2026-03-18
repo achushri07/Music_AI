@@ -1,9 +1,9 @@
-# 🎵 MusicAI — Discover Music Powered by AI
+# MusicAI — Discover Music Powered by AI
 
 **MusicAI** is an intelligent web application that helps users discover songs similar to their favorites using **Natural Language Processing (NLP)**.  
 Just enter any song, artist, or movie name — and let AI find the perfect tracks that match your vibe.
 
-> 🚀 Developed by **Achintya Srivastawa**
+> Developed by **Achintya Srivastawa**
 
 ---
 
@@ -13,7 +13,7 @@ https://github.com/achushri07/Music_AI/blob/main/MusicAI.mp4
 
 ---
 
-## 🌟 Overview
+## Overview
 
 **MusicAI** is powered by **Content-Based Filtering**, a powerful recommendation approach that compares the features of songs to find the most similar ones.  
 By using **TF-IDF Vectorization** and **Cosine Similarity**, the system analyzes relationships between tracks based on their metadata — such as title, singers, genre, and film name.
@@ -22,7 +22,7 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 ### 1. Data Preprocessing
 - The dataset contains key attributes like **Title**, **Singer**, **Composer**, **Genre**, and **Film Name**.
@@ -46,13 +46,13 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
-## 🖼️ Project Preview
+## Project Preview
 
 <img width="1351" height="631" alt="image" src="https://github.com/user-attachments/assets/bd381daa-af29-4774-b2bb-17dccea66eae" />
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
 | Component | Technology Used |
 |------------|----------------|
@@ -64,7 +64,7 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
-## 🧩 Example Workflow
+## Example Workflow
 
 1. User searches for: **“Shreya Ghoshal”**
 2. The app locates all songs related to the input using **TF-IDF Vectorization**.
@@ -73,21 +73,21 @@ This allows users to discover songs that share a similar mood, emotion, or theme
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🎧 AI-powered music discovery  
-- 🧠 NLP-based similarity engine using TF-IDF & Cosine Similarity  
-- 🔍 Search by song, artist, or movie name  
-- 💡 Content-Based Filtering for intelligent recommendations  
-- 🌐 Interactive and aesthetic web design using HTML, CSS, JS  
+- AI-powered music discovery  
+- NLP-based similarity engine using TF-IDF & Cosine Similarity  
+- Search by song, artist, or movie name  
+- Content-Based Filtering for intelligent recommendations  
+- Interactive and aesthetic web design using HTML, CSS, JS  
 
 ---
 
-## 🏁 Conclusion
+## Conclusion
 
 MusicAI combines **Artificial Intelligence** and **Natural Language Processing** to make song discovery smarter and more intuitive.  
 By applying **Content-Based Filtering** with **TF-IDF** and **Cosine Similarity**, it delivers accurate and meaningful music recommendations — all wrapped in a simple, elegant interface.
 
 ---
 
-⭐ **If you like this project, don’t forget to star the repository!**
+**If you like this project, don’t forget to star the repository!**
